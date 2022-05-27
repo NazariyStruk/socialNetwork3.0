@@ -1,3 +1,5 @@
+package repo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -5,9 +7,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class DBController {
+import repo.userRepo.UserRepo;
 
-	public static void addUser(Connection connection, Scanner scanner) throws SQLException {
+public class UserRepository implements UserRepo {
+
+	@Override
+	public PreparedStatement findUser(Connection connection, Scanner scanner) throws SQLException {
+		String SQL_GET_USER = "select * from users where firstname like ?";
+		PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_USER);
+		System.out.println("Введіть Ім'я користувача для пошуку");
+		scanner.nextLine();
+		String name = scanner.nextLine();
+		preparedStatement.setString(1, name);
+		preparedStatement.execute();
+		return preparedStatement;
+	}
+
+	@Override
+	public PreparedStatement addUser(Connection connection, Scanner scanner) throws SQLException {
 		String SQL_ADD_USER = "insert into users (firstname, secondname, age , country, city, friendsamount) values (?,?,?,?,?,?)";
 		PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER);
 		System.out.println("Введіть Ім'я користувача");
@@ -29,22 +46,14 @@ public class DBController {
 		System.out.println("Введіть кількість друзів користувача");
 		String amount = scanner.nextLine();
 		preparedStatement.setString(6, amount);
-		preparedStatement.executeUpdate();
+		return preparedStatement;
 	}
 
-	public static void getAllUsers(Connection connection) throws SQLException {
+	@Override
+	public ResultSet getAllUsers(Connection connection) throws SQLException {
 		Statement statement = connection.createStatement();
 		String SQL_SELECT_USERS = "select * from users order by id";
 		ResultSet resultSet = statement.executeQuery(SQL_SELECT_USERS);
-
-		while (resultSet.next()) {
-			System.out.println(resultSet.getInt("id") + " "
-					+ resultSet.getString("firstName") + " "
-					+ resultSet.getString("secondName") + " "
-					+ resultSet.getInt("age") + " "
-					+ resultSet.getString("country") + " "
-					+ resultSet.getString("city") + " "
-					+ resultSet.getInt("friendsAmount"));
-		}
+		return resultSet;
 	}
 }

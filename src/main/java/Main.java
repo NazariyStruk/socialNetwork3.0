@@ -1,39 +1,25 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.Scanner;
 
+import config.ConnectionManager;
+import service.UserServiceImpl;
+
 public class Main {
-	private static final String DB_USERNAME = "postgres";
-	private static final String DB_PASSWORD = "1111";
-	private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
 
 	public static void main(String[] args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
-		Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+		Connection connection = ConnectionManager.getConnection();
+		UserServiceImpl userService = new UserServiceImpl();
 		while (true) {
-			System.out.println("------------------------------");
-			System.out.println("1.Показати список усіх користувачів");
-			System.out.println("2.Добавити користувача");
-			System.out.println("3.Знайти користувача");
-			System.out.println("4.Вийти");
-			System.out.println("------------------------------");
-
+			userService.menu();
 			int command = scanner.nextInt();
 
 			if (command == 1) {
-				DBController.getAllUsers(connection);
+				userService.getAllUsers(connection);
 			} else if (command == 2) {
-				DBController.addUser(connection, scanner);
+				userService.addUser(connection, scanner);
 			} else if (command == 3) {
-				connection.getAutoCommit();
-				String SQL_GET_USER = "select * from users where firstname like ?";
-				PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_USER);
-				System.out.println("Введіть Ім'я користувача для пошуку");
-				scanner.nextLine();
-				String name = scanner.nextLine();
-				preparedStatement.setString(1, name);
-				preparedStatement.execute();
+				userService.findUser(connection, scanner);
 			} else if (command == 4) {
 				System.exit(0);
 			} else {
