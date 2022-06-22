@@ -1,30 +1,38 @@
-import java.sql.Connection;
+import java.util.Arrays;
 import java.util.Scanner;
 
-import config.ConnectionManager;
-import service.UserServiceImpl;
+import org.hibernate.Session;
+
+import config.HibernateUtil;
+import service.serviceImpl.UserServiceImpl;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception {
-		Scanner scanner = new Scanner(System.in);
-		Connection connection = ConnectionManager.getConnection();
+	public static void main(String[] args) {
 		UserServiceImpl userService = new UserServiceImpl();
-		while (true) {
-			userService.menu();
-			int command = scanner.nextInt();
+		Scanner scanner = new Scanner(System.in);
 
-			if (command == 1) {
-				userService.getAllUsers(connection);
-			} else if (command == 2) {
-				userService.addUser(connection, scanner);
-			} else if (command == 3) {
-				userService.findUser(connection, scanner);
-			} else if (command == 4) {
-				System.exit(0);
-			} else {
-				System.err.println("Не вірна команда");
+		try (Session session = HibernateUtil.getSession()) {
+			session.beginTransaction();
+
+			while (true) {
+				userService.menu();
+				int command = scanner.nextInt();
+
+				if (command == 1) {
+					System.out.println(Arrays.toString(userService.getAllUsers(session).toArray()));
+				} else if (command == 2) {
+					userService.addUser(scanner, session);
+				} else if (command == 3) {
+					System.out.println(Arrays.toString(userService.findUser(scanner, session).toArray()));
+				} else if (command == 4) {
+					System.exit(0);
+				} else {
+					System.err.println("Не вірна команда");
+				}
 			}
+		} catch (Throwable cause) {
+			cause.printStackTrace();
 		}
 	}
 }

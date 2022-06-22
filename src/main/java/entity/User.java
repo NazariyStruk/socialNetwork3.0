@@ -1,13 +1,37 @@
 package entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
+
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(name = "firstname")
 	private String first_name;
+
+	@Column(name = "secondname")
 	private String second_name;
+
+	@Column(name = "country")
 	private String country;
+
+	@Column(name = "city")
 	private String city;
 
+	@Column(name = "age")
 	private int age;
+
+	@Column(name = "friendsamount")
 	private int friends_amount;
 
 	public User(int id, String first_name, String second_name, String country, String city, int age, int friends_amount) {
