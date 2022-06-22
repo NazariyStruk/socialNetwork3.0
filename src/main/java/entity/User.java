@@ -16,11 +16,11 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "firstname")
-	private String first_name;
+	@Column(name = "first_name")
+	private String firstName;
 
-	@Column(name = "secondname")
-	private String second_name;
+	@Column(name = "second_name")
+	private String secondName;
 
 	@Column(name = "country")
 	private String country;
@@ -29,19 +29,20 @@ public class User {
 	private String city;
 
 	@Column(name = "age")
-	private int age;
 
-	@Column(name = "friendsamount")
-	private int friends_amount;
+	private int age; // byte
 
-	public User(int id, String first_name, String second_name, String country, String city, int age, int friends_amount) {
+	@Column(name = "friends_amount")
+	private int friendsAmount;
+
+	public User(int id, String firstName, String secondName, String country, String city, int age, int friendsAmount) {
 		this.id = id;
-		this.first_name = first_name;
-		this.second_name = second_name;
+		this.firstName = firstName;
+		this.secondName = secondName;
 		this.country = country;
 		this.city = city;
 		this.age = age;
-		this.friends_amount = friends_amount;
+		this.friendsAmount = friendsAmount;
 	}
 
 	public User() {
@@ -55,20 +56,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getSecond_name() {
-		return second_name;
+	public String getSecondName() {
+		return secondName;
 	}
 
-	public void setSecond_name(String second_name) {
-		this.second_name = second_name;
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
 	}
 
 	public String getCountry() {
@@ -87,32 +88,32 @@ public class User {
 		this.city = city;
 	}
 
-	public Integer getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 
-	public int getFriends_amount() {
-		return friends_amount;
+	public int getFriendsAmount() {
+		return friendsAmount;
 	}
 
-	public void setFriends_amount(int friends_amount) {
-		this.friends_amount = friends_amount;
+	public void setFriendsAmount(int friendsAmount) {
+		this.friendsAmount = friendsAmount;
 	}
 
 	@Override
 	public String toString() {
 		return "User{" +
 				"id=" + id +
-				", first_name='" + first_name + '\'' +
-				", second_name='" + second_name + '\'' +
+				", firstName='" + firstName + '\'' +
+				", secondName='" + secondName + '\'' +
 				", country='" + country + '\'' +
 				", city='" + city + '\'' +
-				", age='" + age + '\'' +
-				", friends_amount='" + friends_amount + '\'' +
+				", age=" + age +
+				", friendsAmount=" + friendsAmount +
 				'}';
 	}
 }

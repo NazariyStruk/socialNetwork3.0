@@ -7,13 +7,14 @@ import java.util.Scanner;
 import org.hibernate.Session;
 
 import entity.User;
+import model.Response;
 
 public interface UserService {
 
-	void addUser(Scanner scanner, Session session);
+	void addUser(Scanner scanner);
 
-	List<User> getAllUsers(Session session);
+	List<User> getAllUsers();
 
-	List<User> findUser(Scanner scanner, Session session) throws SQLException;
+	Response findUser(Scanner scanner);
 
 }

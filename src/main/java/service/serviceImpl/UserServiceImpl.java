@@ -1,17 +1,20 @@
 package service.serviceImpl;
 
-import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
 import org.hibernate.Session;
 
+import antlr.StringUtils;
 import entity.User;
+import model.Response;
+import repository.UserRepository;
 import repository.repositoryImpl.UserRepositoryImpl;
 import service.UserService;
 
 public class UserServiceImpl implements UserService {
-	UserRepositoryImpl userRepositoryImpl = new UserRepositoryImpl();
+	UserRepository userRepository = new UserRepositoryImpl();
 
 	public static void menu() {
 		System.out.println("------------------------------");
@@ -23,17 +26,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addUser(Scanner scanner, Session session) {
-		userRepositoryImpl.addUser(scanner, session);
+	public void addUser(Scanner scanner) {
+		userRepository.addUser(scanner);
 	}
 
 	@Override
-	public List<User> getAllUsers(Session session) {
-		return userRepositoryImpl.getAllUsers(session);
+	public List<User> getAllUsers() {
+		return userRepository.getAllUsers();
 	}
 
 	@Override
-	public List<User> findUser(Scanner scanner, Session session) throws SQLException {
-		return userRepositoryImpl.findUser(scanner, session);
+	public Response<User> findUser(Scanner scanner) {
+		List<User> ourUsersResult = userRepository.findUser(scanner);
+		Response<User> response = new Response();
+		if (ourUsersResult != null && !ourUsersResult.isEmpty()) {
+			response.setBody(ourUsersResult);
+		}
+		else {
+			response.setErrorMessage("No such User");
+		}
+		return response;
 	}
 }
